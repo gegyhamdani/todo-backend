@@ -29,7 +29,7 @@ app.get("/todos", async (req, res) => {
   try {
     const allTodos = await pool.query("SELECT * FROM todo");
     res.json(allTodos.rows);
-  } catch (error) {
+  } catch (err) {
     console.error(err.message);
   }
 });
@@ -43,7 +43,23 @@ app.get("/todos/:id", async (req, res) => {
     ]);
 
     res.json(todo.rows[0]);
-  } catch (error) {
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+//Update a Tidi
+app.put("/todos/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { description } = req.body;
+    const updateTodo = await pool.query(
+      "UPDATE todo SET description = $1 WHERE todo_id = $2",
+      [description, id]
+    );
+
+    res.json("Todo Was Updated");
+  } catch (err) {
     console.error(err.message);
   }
 });
