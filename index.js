@@ -48,7 +48,7 @@ app.get("/todos/:id", async (req, res) => {
   }
 });
 
-//Update a Tidi
+//Update a Todo
 app.put("/todos/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -59,6 +59,20 @@ app.put("/todos/:id", async (req, res) => {
     );
 
     res.json("Todo Was Updated");
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+//Delete a Todo
+app.delete("/todos/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deleteTodo = await pool.query("DELETE FROM todo WHERE todo_id = $1", [
+      id,
+    ]);
+
+    res.json("Todo Was Deleted");
   } catch (err) {
     console.error(err.message);
   }
